@@ -3,11 +3,16 @@
   <div id="app">
     <h1>Todo List</h1>
     <div class="add-todo">
-      <input v-model="newTodo" placeholder="Add Todo" />
+      <input 
+        v-model="newTodo" 
+        @compositionend="handleEnterOnCompositionEnd" 
+        @keyup.enter="handleEnter" 
+        placeholder="新しいTodoを追加" 
+      />
       <button @click="addTodo">+</button>
     </div>
     <div class="todo-list">
-      <div v-for="(todo, index) in filteredTodos" :key="index">
+      <div v-for="(todo, index) in filteredTodos" :key="index" class="todo-item">
         <input type="checkbox" v-model="todo.completed" />
         <span :class="{ completed: todo.completed }">{{ todo.text }}</span>
         <button @click="deleteTodo(index)">❌</button>
@@ -30,6 +35,7 @@ export default {
       newTodo: '',
       todos: [],
       showCompleted: false,
+      isComposing: false, /*文字入力の変換中かどうか*/
     };
   },
   computed: {
@@ -49,6 +55,14 @@ export default {
     },
     switchShowCompleted() {
       this.showCompleted = !this.showCompleted;
+    },
+    handleEnterOnCompositionEnd() {
+      this.isComposing = false;
+    },
+    handleEnter() {
+      if (!this.isComposing && this.newTodo.trim() !== '') {
+        this.addTodo();
+      }
     }
   },
 };
@@ -74,7 +88,12 @@ img {
 .todo-list {
   text-align: left;
   display: inline-block;
+  width: 400px;
   margin-bottom: 10px;
+}
+
+.todo-item {
+  word-break: break-word;
 }
 
 .filter {
