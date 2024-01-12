@@ -1,24 +1,53 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="container">
+    <div id="title">
+      <img alt="Vue logo" src="./assets/logo.png">
+      <h1>Counter App</h1>
+    </div>
+    <div id="buttons">
+      <button @click="count++">Count: {{ count }}</button>
+      <button @click="count = 0">Reset</button>
+    </div>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
   name: 'App',
-  components: {
-    HelloWorld
-  }
+  data() {
+    return {
+      count: 0
+    }
+  }  
 }
 </script>
 
 <style>
-#app {
+#container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+button {
+  width: 150px; /* ボタンの幅を固定 */
+  margin: 10px; /* ボタンの間の隙間 */
+  padding: 10px 20px; /* ボタンの内側の余白 */
+}
+
+#title img {
+  margin-bottom: 20px; /* ロゴとタイトルの間の余白 */
+}
+
+#title, #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
