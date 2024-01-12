@@ -1,22 +1,23 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
+  <img alt="Vue logo" src="./assets/kimwipe.jpeg">
   <div id="app">
     <h1>Todo List</h1>
     <div class="add-todo">
-      <!-- @keyup.enter イベントトリガー　Enterキー　関数addTodoを呼び出す -->
-      <input v-model="newTodo" @keyup.enter="addTodo" placeholder="新しいTodoを追加" />
-      <button @click="addTodo">追加</button>
+      <input v-model="newTodo" placeholder="Add Todo" />
+      <button @click="addTodo">+</button>
     </div>
     <div class="todo-list">
       <div v-for="(todo, index) in filteredTodos" :key="index">
         <input type="checkbox" v-model="todo.completed" />
         <span :class="{ completed: todo.completed }">{{ todo.text }}</span>
-        <button @click="deletedTodo(index)">削除</button>
+        <button @click="deleteTodo(index)">❌</button>
       </div>
     </div>
     <div class="filter">
       <label>
-        <input type="checkbox" v-model="showCompleted" /> 実行済みのTodoを表示
+        <button @click="switchShowCompleted">
+          {{ showCompleted ? 'Hide completed' : 'Show All' }}
+        </button>
       </label>
     </div>
   </div>
@@ -33,11 +34,7 @@ export default {
   },
   computed: {
     filteredTodos() {
-      if (this.showCompleted) {
-        return this.todos;
-      } else {
-        return this.todos.filter((todo) => !todo.completed);
-      }
+      return this.showCompleted ? this.todos : this.todos.filter(todo => !todo.completed);
     },
   },
   methods: {
@@ -50,11 +47,22 @@ export default {
     deleteTodo(index) {
       this.todos.splice(index, 1);
     },
+    switchShowCompleted() {
+      this.showCompleted = !this.showCompleted;
+    }
   },
 };
 </script>
 
 <style>
+#app {
+  text-align: center;
+}
+img {
+  width: 200px;
+  height: 200px;
+  transform: rotate(270deg);
+}
 .completed {
   text-decoration: line-through;
 }
@@ -64,6 +72,8 @@ export default {
 }
 
 .todo-list {
+  text-align: left;
+  display: inline-block;
   margin-bottom: 10px;
 }
 
