@@ -3,13 +3,15 @@
   <div id="app">
     <h1>Todo List</h1>
     <div class="add-todo">
-      <input 
-        v-model="newTodo" 
-        @compositionend="handleEnterOnCompositionEnd" 
-        @keyup.enter="handleEnter" 
-        placeholder="新しいTodoを追加" 
-      />
+      <form @submit.prevent="addTodo" class="add-todo">
+        <input 
+          v-model="newTodo" 
+          @compositionstart="onCompositionStart" 
+          @compositionend="onCompositionEnd"
+          placeholder="新しいTodoを追加" 
+        />
       <button @click="addTodo">+</button>
+      </form>
     </div>
     <div class="todo-list">
       <div v-for="(todo, index) in filteredTodos" :key="index" class="todo-item">
@@ -34,7 +36,7 @@ export default {
     return {
       newTodo: '',
       todos: [],
-      showCompleted: false,
+      showCompleted: true,
       isComposing: false, /*文字入力の変換中かどうか*/
     };
   },
@@ -45,7 +47,7 @@ export default {
   },
   methods: {
     addTodo() {
-      if (this.newTodo.trim() !== '') {
+      if (!this.isComposing && this.newTodo.trim() !== '') {
         this.todos.push({ text: this.newTodo, completed: false });
         this.newTodo = '';
       }
@@ -56,14 +58,12 @@ export default {
     switchShowCompleted() {
       this.showCompleted = !this.showCompleted;
     },
-    handleEnterOnCompositionEnd() {
+    onCompositionStart() {
+      this.isComposing = true;
+    },
+    onCompositionEnd() {
       this.isComposing = false;
     },
-    handleEnter() {
-      if (!this.isComposing && this.newTodo.trim() !== '') {
-        this.addTodo();
-      }
-    }
   },
 };
 </script>
@@ -82,14 +82,13 @@ img {
 }
 
 .add-todo {
-  margin-bottom: 10px;
+  margin: 10px 0;
 }
 
 .todo-list {
   text-align: left;
   display: inline-block;
   width: 400px;
-  margin-bottom: 10px;
 }
 
 .todo-item {
