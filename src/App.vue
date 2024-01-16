@@ -25,6 +25,11 @@
     </div>
 
   </div>
+  <nav>
+    <!-- <router-link to="/" class="nav-link">Todo List</router-link> -->
+    <router-link to="/about" class="nav-link">About</router-link>
+  </nav>
+  <router-view></router-view>
 </template>
 
 <script>
@@ -102,6 +107,11 @@ img {
 }
 
 .filter {
+  margin-top: 10px;
+}
+
+.nav-link {
+  display: block;
   margin-top: 10px;
 }
 </style>
