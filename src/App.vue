@@ -1,10 +1,6 @@
 <template>
   <div id="app">
     <h1>Todo List</h1>
-    <!-- <div class="add-todo">
-      <input v-model="newTodo" placeholder="新しいTodoを追加" />
-      <button @click="addTodo">追加</button>
-    </div> -->
     <form @submit.prevent="addTodo" class="add-todo">
       <input v-model="newTodo" placeholder="新しいTodoを追加" />
       <button type="submit">追加</button>
