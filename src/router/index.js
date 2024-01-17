@@ -1,12 +1,12 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
-import App from '../App.vue'; // Todoリストページのコンポーネント
+import TodoList from '../components/TodoList.vue'; // Todoリストページのコンポーネント
 import AboutPage from '../views/About.vue'; // Aboutページのコンポーネント
 
 const routes = [
 {
-path: '/',
+path: '/todolist',
 name: 'TodoList',
-component: App
+component: TodoList
 },
 {
 path: '/about',
