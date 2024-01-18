@@ -25,6 +25,7 @@
 <script>
 import axios from 'axios';
 import TodoItem from './TodoItem.vue';
+import { v4 as uuidv4 } from 'uuid';
 
 export default {
   components: {
@@ -35,7 +36,7 @@ export default {
       newTodo: '',
       todos: [],
       showCompleted: true,
-      nextTodoId: 1
+      // nextTodoId: 1
     };
   },
   // APIリクエストの実装
@@ -69,7 +70,7 @@ export default {
     addTodo() {
       if (this.newTodo.trim() !== '') {
         this.todos.push({
-          id: this.nextTodoId++,
+          id: uuidv4(),
           text: this.newTodo,
           completed: false
         });
