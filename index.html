@@ -2,63 +2,26 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>TodoLIst</title>
-  <link rel="stylesheet" href="styles.css">
-  <!-- <script type="text/javascript" src="sample.js"></script> -->
+  <title>TodoList</title>
+  <link rel="stylesheet" href="./css/styles.css">
 </head>
 <body>
   <div class="header">
     <nav>
-        <router-link to="/about" class="nav-link">About</router-link>
-        <router-link to="/todolist" class="nav-link">Todo List</router-link>
+        <ul>
+            <li><a href="about.html">About</a></li>
+            <li><a href="todolist.html">TodoList</a></li>
+        </ul>
     </nav>
   </div>
   <div class="main">
-    <div class="todo-list">
-        <div id="app">
-            <h1>Todo List</h1>
-            <form @submit.prevent="addTodo" class="add-todo">
-                <input v-model="newTodo" placeholder="新しいTodoを追加" />
-                <button type="submit">追加</button>
-            </form>
-            <div class="todo-list">
-                <todo-item
-                v-for="todo in filteredTodos"
-                :key="todo.id"
-                :todo="todo"
-                @delete-todo="deleteTodo"
-                @toggle-completed="toggleCompleted"
-                ></todo-item>
-            </div>
-            <div class="filter">
-                <button @click="toggleShowCompleted">
-                {{ showCompleted ? 'Hide Completed' : 'Show All' }}
-                </button>
-            </div>
-        </div>
-    </div>
+    <h1>画面遷移の練習で作ったページです</h1>
+    <p>About:説明</p>
+    <p>TodoList:DBから取得したTodoの一覧</p>
   </div>
   <div class="footer">
     <span>Footer</span>
     <a href="#">リンク</a>
   </div>
-  <script src="https://unpkg.com/vue@next"></script>
-  <script src="./src/main.js"></script>
-  <script src=""></script>
-  <script>
-    const app = Vue.createApp({
-        
-    });
-
-    app.component('TodoList', {
-
-    });
-
-    app.component('TodoItem', {
-
-    });
-
-    app.mount('#app');
-  </script>
 </body>
 </html>
