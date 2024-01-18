@@ -24,6 +24,7 @@
   <nav>
     <router-link to="/about" class="nav-link">About</router-link>
     <router-link to="/todolist" class="nav-link">Todo List</router-link>
+    <a href="atagtest.html" class="nav-link">aタグ</a>
   </nav>
   <router-view></router-view>
 </template>
