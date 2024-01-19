@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>A Tag Test Page</title>
+  <!-- Vue.jsのCDNからの読み込み -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+</head>
+<body>
+  <!-- コンポーネントのテンプレート定義 -->
+  <script type="text/x-template" id="my-component-template">
+    <div>
+      <h2>コンポーネント内のメッセージ: {{ myMessage }}</h2>
+    </div>
+  </script>
+
+  <div id="app">
+    <!-- コンポーネントを使用 -->
+    <my-component :my-message="parentMessage"></my-component>
+  </div>
+
+  <script>
+    // コンポーネントの登録
+    Vue.component('my-component', {
+      template: '#my-component-template',
+      props: ['myMessage']
+    });
+
+    // Vueインスタンスの作成
+    new Vue({
+      el: '#app',
+      data: {
+        parentMessage: '親コンポーネントからのメッセージ'
+      }
+    });
+  </script>
+</body>
+</html>
