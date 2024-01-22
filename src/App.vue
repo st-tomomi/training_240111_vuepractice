@@ -1,47 +1,28 @@
-<!-- <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
-</template>
+<script setup>
+import { reactive, computed } from 'vue'
 
-<script>
-import HelloWorld from './components/HelloWorld.vue'
+const author = reactive({
+  name: 'John Doe',
+  books: [
+    'Vue 2 - Advanced Guide',
+    'Vue 3 - Basic Guide',
+    'Vue 4 - The Mystery'
+  ]
+})
 
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+// a computed ref
+const publishedBooksMessage = computed(() => {
+  return author.books.length > 0 ? 'Yes' : 'No'
+})
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style> -->
 <template>
-  <div id="app">
-    <button @click="count++">
-      Count is* {{ count }}
-    </button>
-  </div>
+  <p>Has published books:</p>
+  <span>{{ publishedBooksMessage }}</span>
 </template>
 
-<script>
-import { ref } from 'vue'
-
-export default {
-  setup() {
-    const count = ref(0)
-
-    return {
-      count
-    }
-  }
+<style scoped>
+* {
+  font-weight: bold;
 }
-</script>
+</style>
