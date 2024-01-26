@@ -68,22 +68,43 @@ export default {
       });
     },
     addTodo() {
-      if (this.newTodo.trim() !== '') {
-        this.todos.push({
-          id: uuidv4(),
-          text: this.newTodo,
+      const todoText = this.newTodo.trim();
+      if (todoText !== '') {
+        const newTodo = { // フォームのテキストと変数名被り
+          id: uuidv4(), // UUIDを生成
+          text: todoText,
           completed: false
-        });
-        this.newTodo = '';
+        };
+        axios.post('http://localhost/todo_api/add.php', newTodo)
+          .then(() => {
+            // 成功したらリストに追加
+            this.todos.push(newTodo); // 生成したUUIDと共に新しいTodoをリストに追加
+            this.newTodo = ''; // 入力欄をクリア
+          })
+          .catch(error => console.error("Error adding todo:", error));
       }
     },
     deleteTodo(todoId) {
-      this.todos = this.todos.filter(todo => todo.id !== todoId);
+      axios.delete(`http://localhost/todo_api/delete.php?id=${todoId}`)
+        .then(() => {
+          // 成功したらリストから削除
+          this.todos = this.todos.filter(todo => todo.id !== todoId);
+        })
+        .catch(error => console.error("Error deleting todo:", error));
     },
     toggleCompleted(todoId) {
       const index = this.todos.findIndex(todo => todo.id === todoId);
       if (index !== -1) {
-        this.todos[index].completed = !this.todos[index].completed;
+        const todo = this.todos[index];
+        axios.put(`http://localhost/todo_api/update.php`, {
+          id: todoId,
+          completed: !todo.completed
+        })
+        .then(() => {
+          // 成功したら状態を切り替え
+          this.todos[index].completed = !this.todos[index].completed;
+        })
+        .catch(error => console.error("Error updating todo:", error));
       }
     },
     toggleShowCompleted() {
