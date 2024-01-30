@@ -2,22 +2,24 @@
     <div id="app">
         <h1>Todo List</h1>
         <form @submit.prevent="addTodo" class="add-todo">
-            <input v-model="newTodo" placeholder="新しいTodoを追加" />
+            <input v-model="input_newTodo" placeholder="新しいTodoを追加" /><br>
+            <input type="date" v-model="newDueDate" /> <!-- 日付入力 -->
             <button type="submit">追加</button>
         </form>
+        <div class="filter">
+            <button @click="toggleShowCompleted">
+            {{ showCompleted ? 'Hide Completed' : 'Show All' }}
+            </button>
+        </div>
         <div class="todo-list">
         <todo-item
         v-for="todo in filteredTodos"
         :key="todo.id"
         :todo="todo"
         @delete-todo="deleteTodo"
+        @update-todo="updateTodo"
         @toggle-completed="toggleCompleted"
         ></todo-item>
-        </div>
-        <div class="filter">
-            <button @click="toggleShowCompleted">
-            {{ showCompleted ? 'Hide Completed' : 'Show All' }}
-            </button>
         </div>
     </div>
 </template>
@@ -33,10 +35,9 @@ export default {
   },
   data() {
     return {
-      newTodo: '',
+      input_newTodo: '',
       todos: [],
       showCompleted: true,
-      // nextTodoId: 1
     };
   },
   // APIリクエストの実装
@@ -68,18 +69,20 @@ export default {
       });
     },
     addTodo() {
-      const todoText = this.newTodo.trim();
+      const todoText = this.input_newTodo.trim();
+      const dueDate = this.newDueDate || null;
       if (todoText !== '') {
-        const newTodo = { // フォームのテキストと変数名被り
+        const newTodo = {
           id: uuidv4(), // UUIDを生成
           text: todoText,
-          completed: false
+          completed: false,
+          dueDate: dueDate
         };
         axios.post('http://localhost/todo_api/add.php', newTodo)
           .then(() => {
             // 成功したらリストに追加
             this.todos.push(newTodo); // 生成したUUIDと共に新しいTodoをリストに追加
-            this.newTodo = ''; // 入力欄をクリア
+            this.input_newTodo = ''; // 入力欄をクリア
           })
           .catch(error => console.error("Error adding todo:", error));
       }
@@ -91,6 +94,21 @@ export default {
           this.todos = this.todos.filter(todo => todo.id !== todoId);
         })
         .catch(error => console.error("Error deleting todo:", error));
+    },
+    updateTodo(todoId, newText, newDueDate) {
+      axios.put('http://localhost/todo_api/edit.php', {
+        id: todoId,
+        text: newText,
+        dueDate: newDueDate
+      })
+      .then(() => {
+        const index = this.todos.findIndex(todo => todo.id === todoId);
+        if (index !== -1) {
+          this.todos[index].text = newText;
+          this.todos[index].dueDate = newDueDate;
+        }
+      })
+      .catch(error => console.error("Error editing todo:", error));
     },
     toggleCompleted(todoId) {
       const index = this.todos.findIndex(todo => todo.id === todoId);
@@ -137,7 +155,7 @@ export default {
 }
 
 .filter {
-  margin-top: 10px;
+  margin: 10px;
 }
 
 
