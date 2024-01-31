@@ -2,7 +2,7 @@
     <div id="app">
         <h1>Todo List</h1>
         <form @submit.prevent="addTodo" class="add-todo">
-            <input v-model="input_newTodo" placeholder="新しいTodoを追加" /><br>
+            <input size="40" v-model="input_newTodo" placeholder="新しいTodoを追加" /><br>
             <input type="date" v-model="newDueDate" /> <!-- 日付入力 -->
             <button type="submit">追加</button>
         </form>
@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     fetchTodos() {
-      axios.get('http://localhost/todo_api/index.php')
+      axios.get('http://localhost/todo_api_cloud/index.php')
       .then(response => {
         // APIからのレスポンスデータを受け取る
         this.todos = response.data;
@@ -78,17 +78,23 @@ export default {
           completed: false,
           dueDate: dueDate
         };
-        axios.post('http://localhost/todo_api/add.php', newTodo)
-          .then(() => {
-            // 成功したらリストに追加
-            this.todos.push(newTodo); // 生成したUUIDと共に新しいTodoをリストに追加
-            this.input_newTodo = ''; // 入力欄をクリア
+        axios.post('http://localhost/todo_api_cloud/add.php', newTodo)
+          .then(response => {
+            const data = response.data;
+            if (data.success) {
+              // 成功したらリストに追加
+              this.todos.push(newTodo); // 生成したUUIDと共に新しいTodoをリストに追加
+              this.input_newTodo = ''; // 入力欄をクリア
+            } else {
+              //失敗 TodoをTodoリストに追加しない 入力欄もクリアしない
+              console.error("Error adding todo: ", data.message);
+            }
           })
           .catch(error => console.error("Error adding todo:", error));
       }
     },
     deleteTodo(todoId) {
-      axios.delete(`http://localhost/todo_api/delete.php?id=${todoId}`)
+      axios.delete(`http://localhost/todo_api_cloud/delete.php?id=${todoId}`)
         .then(() => {
           // 成功したらリストから削除
           this.todos = this.todos.filter(todo => todo.id !== todoId);
@@ -96,7 +102,7 @@ export default {
         .catch(error => console.error("Error deleting todo:", error));
     },
     updateTodo(todoId, newText, newDueDate) {
-      axios.put('http://localhost/todo_api/edit.php', {
+      axios.put('http://localhost/todo_api_cloud/edit.php', {
         id: todoId,
         text: newText,
         dueDate: newDueDate
@@ -114,7 +120,7 @@ export default {
       const index = this.todos.findIndex(todo => todo.id === todoId);
       if (index !== -1) {
         const todo = this.todos[index];
-        axios.put(`http://localhost/todo_api/update.php`, {
+        axios.put(`http://localhost/todo_api_cloud/update.php`, {
           id: todoId,
           completed: !todo.completed
         })
@@ -136,23 +142,23 @@ export default {
 #app {
   text-align: center;
 }
-.completed {
+/* .completed {
   text-decoration: line-through;
-}
+} */
 
 .add-todo {
   margin: 10px 0;
 }
 
-.todo-list {
+/* .todo-list {
   text-align: left;
   display: inline-block;
-  width: 400px;
-}
+  width: 600px;
+} */
 
-.todo-item {
+/* .todo-item {
   word-break: break-word;
-}
+} */
 
 .filter {
   margin: 10px;

@@ -1,19 +1,43 @@
 <template>
-    <div class="todo-item">
+    <!-- <div class="todo-item">
       <div v-if="isEditing">
         <input v-model="editableText" />
         <input type="date" v-model="editableDueDate" />
-        <button @click="updateTodo">更新</button>
-        <button @click="cancelEdit">キャンセル</button>
+        <div class="buttons-right">
+          <button @click="updateTodo">更新</button>
+          <button @click="cancelEdit">キャンセル</button>
+        </div>
       </div>
       <div v-else>
         <input type="checkbox" :checked="todo.completed" @change="toggleCompleted" />
       <span :class="{ completed: todo.completed }">{{ todo.text }}</span>
       <span v-if="todo.dueDate">{{ todo.dueDate }}</span>
-      <button @click="startEdit">編集</button>
-      <button @click="deleteTodo">削除</button>
+      <div class="buttons-right">
+        <button @click="startEdit">編集</button>
+        <button @click="deleteTodo">削除</button>
+      </div>
+      </div>
+    </div> -->
+  <div class="todo-item">
+    <div class="todo-item-content">
+      <div v-if="isEditing">
+        <input size="40" v-model="editableText" />
+        <input type="date" v-model="editableDueDate" />
+      </div>
+      <div v-else>
+        <input type="checkbox" :checked="todo.completed" @change="toggleCompleted" />
+        <span :class="{ completed: todo.completed }">{{ todo.text }}</span>
+        <span v-if="todo.dueDate">{{ todo.dueDate }}</span>
       </div>
     </div>
+    <div class="buttons-right">
+      <button v-if="isEditing" @click="updateTodo">更新</button>
+      <button v-else @click="startEdit">編集</button>
+      <button v-if="isEditing" @click="cancelEdit">キャンセル</button>
+      <button v-else @click="deleteTodo">削除</button>
+    </div>
+  </div>
+
   </template>
   
   <script>
@@ -54,5 +78,37 @@
   .completed {
     text-decoration: line-through;
   }
+
+  .todo-item {
+  display: flex;
+  align-items: center; 
+  justify-content: space-between;
+  width: 600px; 
+  margin-bottom: 10px; 
+}
+
+.todo-item-content {
+  /* display: flex;
+  flex-grow: 1;
+  align-items: center; */
+  flex-grow: 1;
+  overflow-x: auto;
+}
+
+.todo-item-content span {
+  /* white-space: nowrap; */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.todo-item input[type="checkbox"], .todo-item span {
+  margin-right: 10px; 
+}
+
+.buttons-right {
+  /* margin-left: auto; */
+  flex-shrink: 0;
+  min-width: 100px;
+}
   </style>
   
