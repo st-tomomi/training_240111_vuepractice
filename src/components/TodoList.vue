@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     fetchTodos() {
-      axios.get('http://localhost/todo_api_cloud/index.php')
+      axios.get('http://34.68.79.61/index.php')
       .then(response => {
         // APIからのレスポンスデータを受け取る
         this.todos = response.data;
@@ -78,7 +78,7 @@ export default {
           completed: false,
           dueDate: dueDate
         };
-        axios.post('http://localhost/todo_api_cloud/add.php', newTodo)
+        axios.post('http://34.68.79.61/add.php', newTodo)
           .then(response => {
             const data = response.data;
             if (data.success) {
@@ -94,7 +94,7 @@ export default {
       }
     },
     deleteTodo(todoId) {
-      axios.delete(`http://localhost/todo_api_cloud/delete.php?id=${todoId}`)
+      axios.delete(`http://34.68.79.61/delete.php?id=${todoId}`)
         .then(() => {
           // 成功したらリストから削除
           this.todos = this.todos.filter(todo => todo.id !== todoId);
@@ -102,7 +102,7 @@ export default {
         .catch(error => console.error("Error deleting todo:", error));
     },
     updateTodo(todoId, newText, newDueDate) {
-      axios.put('http://localhost/todo_api_cloud/edit.php', {
+      axios.put('http://34.68.79.61/edit.php', {
         id: todoId,
         text: newText,
         dueDate: newDueDate
@@ -120,7 +120,7 @@ export default {
       const index = this.todos.findIndex(todo => todo.id === todoId);
       if (index !== -1) {
         const todo = this.todos[index];
-        axios.put(`http://localhost/todo_api_cloud/update.php`, {
+        axios.put(`http://34.68.79.61/update.php`, {
           id: todoId,
           completed: !todo.completed
         })
