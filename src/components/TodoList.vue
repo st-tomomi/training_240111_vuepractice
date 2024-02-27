@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     fetchTodos() {
-      axios.get('http://34.41.60.14:3000/todos')
+      axios.get('http://35.222.238.228:3000/todos')
       .then(response => {
         // APIからのレスポンスデータを受け取る
         this.todos = response.data;
@@ -78,7 +78,7 @@ export default {
           completed: false,
           dueDate: dueDate
         };
-        axios.post('http://34.41.60.14:3000/todos', newTodo)
+        axios.post('http://35.222.238.228:3000/todos', newTodo)
           .then(response => {
             const data = response.data;
             if (data.success) {
@@ -94,7 +94,7 @@ export default {
       }
     },
     deleteTodo(todoId) {
-      axios.delete(`http://34.41.60.14:3000/todos/${todoId}`)
+      axios.delete(`http://35.222.238.228:3000/todos/${todoId}`)
         .then(() => {
           // 成功したらリストから削除
           this.todos = this.todos.filter(todo => todo.id !== todoId);
@@ -102,7 +102,7 @@ export default {
         .catch(error => console.error("Error deleting todo:", error));
     },
     updateTodo(todoId, newText, newDueDate) {
-      axios.put(`http://34.41.60.14:3000/todos/${todoId}`, {
+      axios.put(`http://35.222.238.228:3000/todos/${todoId}`, {
         text: newText,
         dueDate: newDueDate
       })
@@ -119,7 +119,7 @@ export default {
       const index = this.todos.findIndex(todo => todo.id === todoId);
       if (index !== -1) {
         const todo = this.todos[index];
-        axios.put(`http://34.41.60.14:3000/todos/${todoId}`, {
+        axios.put(`http://35.222.238.228:3000/todos/${todoId}`, {
           id: todoId,
           completed: !todo.completed
         })
@@ -141,23 +141,11 @@ export default {
 #app {
   text-align: center;
 }
-/* .completed {
-  text-decoration: line-through;
-} */
 
 .add-todo {
   margin: 10px 0;
 }
 
-/* .todo-list {
-  text-align: left;
-  display: inline-block;
-  width: 600px;
-} */
-
-/* .todo-item {
-  word-break: break-word;
-} */
 
 .filter {
   margin: 10px;
