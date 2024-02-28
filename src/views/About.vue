@@ -15,6 +15,8 @@
   </template>
   
   <script>
+  import axios from 'axios';
+  
   export default {
     name: 'AboutPage',
     data() {
@@ -31,13 +33,18 @@
           return;
         }
         try {
-          await this.$http.post('/api/feedback', { name: this.name, email: this.email, message: this.message });
+          await axios.post('http://35.222.238.228:3000/api/feedback', { 
+            name: this.name, 
+            email: this.email, 
+            message: this.message 
+          });
           alert("Feedback submitted successfully.");
-          // フォームのリセット
+      
           this.name = '';
           this.email = '';
           this.message = '';
         } catch (error) {
+          console.error("Failed to submit feedback:", error);
           alert("Failed to submit feedback.");
         }
       }
