@@ -8,7 +8,7 @@
       <form @submit.prevent="submitFeedback">
         <input type="text" v-model="name" placeholder="Your Name (Optional)" /><br>
         <input type="email" v-model="email" placeholder="Your Email (Optional)" /><br>
-        <textarea v-model="message" placeholder="Your Message" required></textarea><br>
+        <textarea v-model="message" placeholder="Your Message" ></textarea><br>
         <button tyoe="submit">Submit</button>
       </form>
     </div>
@@ -16,7 +16,7 @@
   
   <script>
   import axios from 'axios';
-  
+
   export default {
     name: 'AboutPage',
     data() {
@@ -29,23 +29,27 @@
     methods: {
       async submitFeedback() {
         if (!this.message) {
-          alert("Message is required.");
+          alert("メッセージを入力してください");
           return;
         }
         try {
-          await axios.post('http://35.222.238.228:3000/api/feedback', { 
+          const response = await axios.post('http://35.222.238.228:3000/api/feedback', { 
             name: this.name, 
             email: this.email, 
             message: this.message 
           });
-          alert("Feedback submitted successfully.");
-      
-          this.name = '';
-          this.email = '';
-          this.message = '';
+          
+          if (response.status === 200) {
+            this.name = '';
+            this.email = '';
+            this.message = '';
+            alert("ありがとうございます😁");
+          } else {
+            throw new Error("Invalid response status: " + response.status);
+          }
         } catch (error) {
           console.error("Failed to submit feedback:", error);
-          alert("Failed to submit feedback.");
+          alert("フィードバックの送信に失敗しました");
         }
       }
     }
